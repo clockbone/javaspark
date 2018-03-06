@@ -1,0 +1,50 @@
+这个项目只是java spark实践入门
+1 注意集群spark的版本号,因为我们集群版本号是1.6.2,所以spark-core等相关jar包都是引用1.6.2
+官方1.6.2参考文档:http://spark.apache.org/docs/1.6.2/
+官方给出的例子:https://github.com/apache/spark/tree/master/examples/src/main/java/org/apache/spark/examples
+注:官方给出的列spark版本号比较高,可能有些语法并不适用1.6.2,所以在语法方面也走过很多坑
+
+2 注意相关jar版本号匹配,否则会报出各错误
+引用spark各Jar版本号,参考:
+http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.apache.spark%22%20AND%20v%3A%221.6.2%22
+http://mvnrepository.com/artifact/org.scalatest/scalatest_2.11/2.2.1
+
+3 一个spark参考doc
+https://docs.databricks.com/spark/latest/data-sources/oracle.html
+
+4 spark在本地的安装文档参考
+http://codingxiaxw.cn/2016/12/07/60-mac-spark/
+只有在本安装了环境,才能方便在本地测试,对于入门来说很重要,在本地测试成功后,可打成jar包提交到spark集群运行
+
+5 关于一jar不匹配的报错
+spark会依赖`jackson-core` ,刚开始整合到项目中的时候,项目中也引用了`jackson-core`,此时引用的版本为`2.2.0`,运行spark程序的时候就会报错,大概意思就是说jackson-core版本号过低,于是升级jackson-core到`2.4.4`问题解决.
+当然在spark其它Jar引用的时候,也出现过一些错误,有些错误提示可能不太明显,但需要考虑是否是jar包版本不匹配引起的问题
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>${version.jackson}</version>
+</dependency>
+```
+
+6 注意jdbc driver的指定,本地运行没问题,但spark submit可能会报错
+
+7 一个spark submit例子
+在服务器上建立脚本spark-submit.sh
+```
+#!/usr/bin/env bash
+
+num_executors="2"
+executor_cores="1"
+driver_memory="1g"
+executor_memory="1g"
+
+spark-submit \
+--master yarn --deploy-mode cluster --name "job-name" --verbose --queue default \
+--num-executors ${num_executors} --executor-cores ${executor_cores} \
+--driver-memory ${driver_memory} --executor-memory ${executor_memory} \
+#driver路径
+--driver-class-path /opt/lib/spark/mysql-connector-java-5.1.38.jar:/opt/lib/spark/sqljdbc42.jar \
+#运行方法入口  jar路径  方法参数
+--class "spark.SparkTest" /srv/apps/spark/spark-biz-1.0-SNAPSHOT.jar arg1 arg2
+```

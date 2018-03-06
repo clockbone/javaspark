@@ -1,0 +1,29 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+*.classpath
+*/*.classpath
+*.merge-left*
+*.merge-right*
+*.mine
+*.prej
+*.project
+*.working
+*/.git/*
+*/target
+.deployables
+.git
+.settings
+.svn
+_svn
+svn-commit*.tmp
+*.settings
+rebel.xml
+*.metadata/*
+*.DS_Store
+*/rebel.xml
+*.iml
+*.idea
+*.log
+# Created by .ignore support plugin (hsz.mobi)
