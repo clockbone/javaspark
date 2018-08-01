@@ -78,6 +78,7 @@ public class SparkTest {
 
     /**
      * test past
+     * 读取文件
      * @param sc
      */
     public static void sqlTest(JavaSparkContext sc){
@@ -101,6 +102,7 @@ public class SparkTest {
 
     /**
      * test past
+     * 读取文件
      * @param sc
      */
     public static void SQLQueriesTest(JavaSparkContext sc){
@@ -157,7 +159,7 @@ public class SparkTest {
      */
     public static void jdbcTest(JavaSparkContext sc){
         Map<String, String> options = new HashMap<String, String>();
-        options.put("url", "jdbc:mysql://199.199.199.199:3309/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true");
+        options.put("url", "jdbc:mysql://127.0.0.1:3309/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true");
         options.put("dbtable", "test.test");
         options.put("user","test");
         options.put("password","test");
@@ -175,9 +177,9 @@ public class SparkTest {
         String fundId = "000001";
 
         SQLContext sqlContext = new org.apache.spark.sql.SQLContext(sc);
-        String jdbcUrl = "jdbc:mysql://199.199.199.199:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
-        String user = "test";
-        String password = "test";
+        String jdbcUrl = "jdbc:mysql://127.0.0.1:3309/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+        String user = "root";
+        String password = "123456";
         Properties p = new Properties();
         p.put("user",user);
         p.put("password",password);
@@ -185,8 +187,8 @@ public class SparkTest {
         p.put("driver","com.mysql.jdbc.Driver");
 
 
-        DataFrame jdbcDF = sqlContext.read().jdbc(jdbcUrl,"test",p).
-                select("col1","col2","col2").where("  col1='123'");
+        DataFrame jdbcDF = sqlContext.read().jdbc(jdbcUrl,"FUND",p).
+                select("fund_id","fund_name","end_date").where("  fund_id='134'");
         //jdbcDF.javaRDD().
         jdbcDF.show();
 
@@ -200,7 +202,7 @@ public class SparkTest {
         String fundId = "000001";
 
         SQLContext sqlContext = new org.apache.spark.sql.SQLContext(sc);
-        String jdbcUrl = "jdbc:mysql://199.199.199.199:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+        String jdbcUrl = "jdbc:mysql://127.0.0.1:3309/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
         String user = "test";
         String password = "test";
         Properties p = new Properties();
